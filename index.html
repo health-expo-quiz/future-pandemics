@@ -3,24 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pandemic 2050</title>
+  <title>Pandemic Strategy Game</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="game-container">
-    <h1>Pandemic 2050</h1>
-    <div id="score-container">
-      <p><strong>Score:</strong> <span id="score">0</span></p>
+  <header>
+    <h1>Pandemic Strategy Game</h1>
+    <p>Can you balance public trust, containment efforts, and vaccine research to save the world?</p>
+  </header>
+
+  <main>
+    <!-- Game Area -->
+    <div id="game-area">
+      <!-- Story Section -->
+      <div id="story-container">
+        <p id="story">Welcome to the Pandemic Strategy Game! Make your first decision below:</p>
+      </div>
+
+      <!-- Choices Section -->
+      <div id="choices-container">
+        <!-- Buttons for player choices will be dynamically inserted here -->
+      </div>
+
+      <!-- Virus Spread Hotspot -->
+      <div id="virus-spread" class="pulsating-dot"></div>
     </div>
-    <div id="map-container">
-      <img src="world-map.png" alt="World Map" id="map">
-      <div id="virus-spread"></div>
+
+    <!-- Game Stats -->
+    <div id="game-stats">
+      <p id="score-display">Score: 0</p>
+      <p id="trust-display">Public Trust: 50%</p>
+      <p id="containment-display">Containment Efforts: 10</p>
+      <p id="research-display">Vaccine Research Progress: 0%</p>
     </div>
-    <p id="story">
-      In 2050, a mysterious pathogen emerges from Siberia, rapidly spreading worldwide. As Dr. Aria Chen, you must save humanity. Your decisions will determine the planet's fate!
-    </p>
-    <div id="choices"></div>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>Created by [Your Name]</p>
+  </footer>
+
+  <!-- Game Script -->
   <script src="game.js"></script>
 </body>
 </html>
