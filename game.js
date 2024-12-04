@@ -1,68 +1,32 @@
-// Game state and elements
+// Initialize the game state
 let score = 0;
+let researchProgress = 0;
+let containmentEfforts = 0;
+let publicTrust = 50; // Starts at 50%
 
 const storyElement = document.getElementById('story');
-const choicesContainer = document.getElementById('choices');
+const choicesContainer = document.getElementById('choices-container');
 const scoreElement = document.getElementById('score');
 const virusSpread = document.getElementById('virus-spread');
+const gameStats = document.getElementById('game-stats');
 
-// Game state to track progress
-let gameState = {
-  phase: 1,
-  researchProgress: 0,
-  containmentEfforts: 10, // Starts at 10; decreases as virus spreads
-  publicTrust: 50, // Starts at 50%; affects gameplay difficulty
-};
-
-// Function to update score
+// Function to update the score and display it
 function updateScore(points) {
   score += points;
   scoreElement.textContent = `Score: ${score}`;
 }
 
-// Function to update game state display (optional for more clarity)
-function updateGameStateDisplay() {
-  scoreElement.textContent = `Score: ${score}`;
-  // Add additional game state updates here if desired
+// Function to update the public trust and display it
+function updatePublicTrust(points) {
+  publicTrust += points;
+  publicTrust = Math.max(0, Math.min(100, publicTrust)); // Keep within 0-100%
+  document.getElementById('public-trust').textContent = `Public Trust: ${publicTrust}%`;
 }
 
-// Virus spread simulation
-function spreadVirus() {
-  // Generate random positions on the map
-  const randomTop = Math.random() * 80 + '%'; // 0-80% from the top
-  const randomLeft = Math.random() * 80 + '%'; // 0-80% from the left
-
-  // Update the virus spread marker's position
-  virusSpread.style.top = randomTop;
-  virusSpread.style.left = randomLeft;
-
-  // Decrease public trust and containment efforts over time
-  gameState.publicTrust -= 2; // Trust drops as the virus spreads
-  gameState.containmentEfforts -= 1; // Containment efforts weaken
-  updateGameStateDisplay();
-
-  // Player can click on the virus to "contain" it
-  virusSpread.onclick = () => {
-    updateScore(5); // Reward for containment
-    gameState.containmentEfforts += 3; // Boost containment efforts
-    gameState.publicTrust += 2; // Small public trust recovery
-    storyElement.textContent = 'You contained a hotspot! Public trust improves slightly.';
-    updateGameStateDisplay();
-  };
-
-  // Check for game over conditions
-  if (gameState.containmentEfforts <= 0 || gameState.publicTrust <= 0) {
-    endGame();
-  }
-}
-
-// Call spreadVirus every few seconds to simulate the virus moving
-setInterval(spreadVirus, 3000); // Changes position every 3 seconds
-
-// Function to render choices
+// Function to render choices for the player
 function renderChoices(choices) {
-  choicesContainer.innerHTML = ''; // Clear old choices
-  choices.forEach((choice) => {
+  choicesContainer.innerHTML = ''; // Clear previous choices
+  choices.forEach(choice => {
     const button = document.createElement('button');
     button.className = 'choice';
     button.textContent = choice.text;
@@ -71,113 +35,125 @@ function renderChoices(choices) {
   });
 }
 
-// Function to handle player's choices
+// Function to handle the player's choices
 function handleChoice(choice) {
   updateScore(choice.points);
+  updatePublicTrust(choice.trustChange || 0);
   storyElement.textContent = choice.resultText;
 
-  // Adjust game state based on choice effects
   if (choice.effect) {
+    // Update game state based on player's choice
     for (const key in choice.effect) {
-      gameState[key] += choice.effect[key];
+      if (key === 'researchProgress' || key === 'containmentEfforts') {
+        window[key] += choice.effect[key];
+      }
     }
   }
 
-  // Progress to the next phase
   if (choice.nextPhase) {
-    gameState.phase++;
     nextPhase();
   }
-
-  updateGameStateDisplay(); // Keep the display current
 }
+
+// Function to move the virus around the map (simulating its spread)
+function spreadVirus() {
+  const randomTop = Math.random() * 80 + '%'; // 0-80% from the top
+  const randomLeft = Math.random() * 80 + '%'; // 0-80% from the left
+
+  virusSpread.style.top = randomTop;
+  virusSpread.style.left = randomLeft;
+}
+
+// Call spreadVirus every 5 seconds to simulate the virus moving
+setInterval(spreadVirus, 5000); // Changes position every 5 seconds
 
 // Function to start the next phase of the game
 function nextPhase() {
-  switch (gameState.phase) {
-    case 2:
-      storyElement.textContent =
-        'The virus spreads rapidly. Refugee movements complicate containment efforts. How will you respond?';
+  if (publicTrust <= 0) {
+    endGame('Your people have lost faith in you. The virus is out of control...');
+    return;
+  }
+
+  if (researchProgress >= 100) {
+    endGame('You successfully developed a vaccine! The pandemic is under control!');
+    return;
+  }
+
+  // Proceed through game phases based on progress
+  switch (true) {
+    case researchProgress < 30:
+      storyElement.textContent = 'You need to ramp up vaccine research. What will you do?';
       renderChoices([
         {
-          text: 'Establish Refugee Camps (+10 Trust)',
+          text: 'Increase funding for research (+20 Research Progress)',
           points: 10,
-          resultText: 'Refugee camps provide some stability, but resources are stretched thin.',
-          effect: { publicTrust: 10 },
+          trustChange: -5,
+          resultText: 'You increase funding, but public trust decreases slightly.',
+          effect: { researchProgress: 20 },
           nextPhase: true,
         },
         {
-          text: 'Focus on Border Control (+5 Score)',
+          text: 'Focus on containment measures (+15 Containment)',
           points: 5,
-          resultText: 'Border control slows the virus, but public trust declines.',
-          effect: { publicTrust: -10 },
+          trustChange: 0,
+          resultText: 'Containment measures slow the virus, but research suffers.',
+          effect: { containmentEfforts: 15 },
           nextPhase: true,
         },
       ]);
       break;
 
-    case 3:
-      storyElement.textContent =
-        'Cyberattacks disrupt vaccine research. What will you prioritize?';
+    case researchProgress < 60:
+      storyElement.textContent = 'Cyberattacks threaten your research efforts. How do you respond?';
       renderChoices([
         {
-          text: 'Enhance Cybersecurity (+10 Score)',
-          points: 10,
-          resultText: 'Your cybersecurity measures protect critical data.',
-          effect: { researchProgress: 10 },
+          text: 'Increase cybersecurity measures (+20 Research Progress)',
+          points: 15,
+          trustChange: -5,
+          resultText: 'Cybersecurity measures delay progress, but your data is safe.',
+          effect: { researchProgress: 20 },
           nextPhase: true,
         },
         {
-          text: 'Speed Up Research (-5 Trust)',
-          points: 15,
-          resultText: 'Faster research progresses but increases public mistrust.',
-          effect: { publicTrust: -5, researchProgress: 15 },
+          text: 'Speed up research, risking attacks (-10 Public Trust)',
+          points: 5,
+          trustChange: -10,
+          resultText: 'You rush vaccine development, but it increases public doubt.',
+          effect: { researchProgress: 25 },
           nextPhase: true,
         },
       ]);
       break;
 
     default:
-      endGame();
+      endGame('The pandemic has ended. You either succeeded or failed...');
   }
 }
 
-// Function to end the game
-function endGame() {
-  storyElement.textContent =
-    'The pandemic is over. Your final score reflects the lives saved and challenges overcome.';
+// Function to end the game and show the result
+function endGame(message) {
+  storyElement.textContent = message;
   choicesContainer.innerHTML = `
     <p>Final Score: ${score}</p>
+    <p>Public Trust: ${publicTrust}%</p>
     <button class="choice" onclick="restartGame()">Play Again</button>
   `;
 }
 
 // Restart the game
 function restartGame() {
-  location.reload();
+  score = 0;
+  researchProgress = 0;
+  containmentEfforts = 0;
+  publicTrust = 50;
+  scoreElement.textContent = `Score: ${score}`;
+  document.getElementById('public-trust').textContent = `Public Trust: ${publicTrust}%`;
+  storyElement.textContent = 'The pandemic begins... You are Dr. Aria Chen, tasked with saving the world.';
+  nextPhase();
 }
 
-// Start the game with initial choices
-renderChoices([
-  {
-    text: 'Focus on Vaccine Research',
-    points: 10,
-    resultText: 'You prioritize vaccine development, but progress is slow.',
-    effect: { researchProgress: 10 },
-    nextPhase: true,
-  },
-  {
-    text: 'Implement Containment Measures',
-    points: 5,
-    resultText: 'Containment measures buy time but strain resources.',
-    effect: { containmentEfforts: 10 },
-    nextPhase: true,
-  },
-  {
-    text: 'Address Public Trust',
-    points: 15,
-    resultText: 'You focus on public trust, gaining support for science.',
-    effect: { publicTrust: 10 },
-    nextPhase: true,
-  },
-]);
+// Start the game
+document.addEventListener('DOMContentLoaded', () => {
+  storyElement.textContent = 'The pandemic begins... You are Dr. Aria Chen, tasked with saving the world.';
+  nextPhase();
+});
