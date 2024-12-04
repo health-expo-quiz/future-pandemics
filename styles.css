@@ -1,0 +1,79 @@
+/* styles.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #1e3c72, #2a5298);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+#game-container {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+  margin: 0 0 10px;
+}
+
+#score-container {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+#map-container {
+  position: relative;
+  margin: 20px 0;
+}
+
+#map {
+  width: 100%;
+  border-radius: 10px;
+}
+
+#virus-spread {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.choice {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background: #0074D9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.choice:hover {
+  background: #005bb5;
+}
