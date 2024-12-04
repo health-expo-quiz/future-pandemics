@@ -1,4 +1,4 @@
-// game.js
+// Game state and elements
 let score = 0;
 
 const storyElement = document.getElementById('story');
@@ -6,24 +6,63 @@ const choicesContainer = document.getElementById('choices');
 const scoreElement = document.getElementById('score');
 const virusSpread = document.getElementById('virus-spread');
 
-// State to track player's progress
+// Game state to track progress
 let gameState = {
   phase: 1,
   researchProgress: 0,
-  containmentEfforts: 0,
-  publicTrust: 50, // Starts at 50%, influences difficulty
+  containmentEfforts: 10, // Starts at 10; decreases as virus spreads
+  publicTrust: 50, // Starts at 50%; affects gameplay difficulty
 };
 
 // Function to update score
 function updateScore(points) {
   score += points;
-  scoreElement.textContent = score;
+  scoreElement.textContent = `Score: ${score}`;
 }
+
+// Function to update game state display (optional for more clarity)
+function updateGameStateDisplay() {
+  scoreElement.textContent = `Score: ${score}`;
+  // Add additional game state updates here if desired
+}
+
+// Virus spread simulation
+function spreadVirus() {
+  // Generate random positions on the map
+  const randomTop = Math.random() * 80 + '%'; // 0-80% from the top
+  const randomLeft = Math.random() * 80 + '%'; // 0-80% from the left
+
+  // Update the virus spread marker's position
+  virusSpread.style.top = randomTop;
+  virusSpread.style.left = randomLeft;
+
+  // Decrease public trust and containment efforts over time
+  gameState.publicTrust -= 2; // Trust drops as the virus spreads
+  gameState.containmentEfforts -= 1; // Containment efforts weaken
+  updateGameStateDisplay();
+
+  // Player can click on the virus to "contain" it
+  virusSpread.onclick = () => {
+    updateScore(5); // Reward for containment
+    gameState.containmentEfforts += 3; // Boost containment efforts
+    gameState.publicTrust += 2; // Small public trust recovery
+    storyElement.textContent = 'You contained a hotspot! Public trust improves slightly.';
+    updateGameStateDisplay();
+  };
+
+  // Check for game over conditions
+  if (gameState.containmentEfforts <= 0 || gameState.publicTrust <= 0) {
+    endGame();
+  }
+}
+
+// Call spreadVirus every few seconds to simulate the virus moving
+setInterval(spreadVirus, 3000); // Changes position every 3 seconds
 
 // Function to render choices
 function renderChoices(choices) {
   choicesContainer.innerHTML = ''; // Clear old choices
-  choices.forEach(choice => {
+  choices.forEach((choice) => {
     const button = document.createElement('button');
     button.className = 'choice';
     button.textContent = choice.text;
@@ -37,7 +76,7 @@ function handleChoice(choice) {
   updateScore(choice.points);
   storyElement.textContent = choice.resultText;
 
-  // Adjust game state based on choice
+  // Adjust game state based on choice effects
   if (choice.effect) {
     for (const key in choice.effect) {
       gameState[key] += choice.effect[key];
@@ -49,6 +88,8 @@ function handleChoice(choice) {
     gameState.phase++;
     nextPhase();
   }
+
+  updateGameStateDisplay(); // Keep the display current
 }
 
 // Function to start the next phase of the game
@@ -116,7 +157,7 @@ function restartGame() {
   location.reload();
 }
 
-// Start the game
+// Start the game with initial choices
 renderChoices([
   {
     text: 'Focus on Vaccine Research',
