@@ -1,79 +1,143 @@
-/* styles.css */
-body {
+/* General Reset */
+body, h1, p, button {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #1e3c72, #2a5298);
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+  background: linear-gradient(to bottom, #85d7ff, #1fb6ff);
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Header Section */
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+header p {
+  font-size: 1.2rem;
+}
+
+/* Main Game Area */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Story Section */
+#story-container {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
   text-align: center;
 }
 
-#game-container {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 700px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+#story {
+  font-size: 1.2rem;
+  line-height: 1.5;
 }
 
-h1 {
-  margin: 0 0 10px;
+/* Choices Section */
+#choices-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-#score-container {
-  margin: 10px 0;
-  font-size: 18px;
+.choice {
+  background: #1fb6ff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s, background 0.2s;
 }
 
-#map-container {
+.choice:hover {
+  background: #007acc;
+  transform: scale(1.05);
+}
+
+/* Virus Spread Section */
+#game-area {
   position: relative;
-  margin: 20px 0;
-}
-
-#map {
   width: 100%;
-  border-radius: 10px;
+  height: 300px;
+  background: #001f3f;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 #virus-spread {
   position: absolute;
-  top: 30%;
-  left: 40%;
   width: 20px;
   height: 20px;
-  background: red;
   border-radius: 50%;
-  animation: pulse 2s infinite;
+  background: red;
+  box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.6);
+  animation: pulsate 1.5s infinite;
 }
 
-@keyframes pulse {
+@keyframes pulsate {
   0% {
     transform: scale(1);
-    opacity: 0.9;
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.7;
   }
   100% {
-    transform: scale(1.5);
-    opacity: 0;
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
-.choice {
-  margin: 10px 0;
-  padding: 10px 20px;
-  background: #0074D9;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+/* Game Stats Section */
+#game-stats {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.choice:hover {
-  background: #005bb5;
+#game-stats p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Footer Section */
+footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
