@@ -1,143 +1,138 @@
 /* General Reset */
-body, h1, p, button {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
-/* Body Styling */
 body {
-  background: linear-gradient(to bottom, #85d7ff, #1fb6ff);
-  color: #fff;
+  background: linear-gradient(to bottom, #b0e4f9, #6cb5e5);
+  color: #333;
+  text-align: center;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
+  justify-content: flex-start;
+}
+
+/* Game Container */
+.game-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 /* Header Section */
 header {
-  text-align: center;
   margin-bottom: 20px;
 }
 
 header h1 {
-  font-size: 2.5rem;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 2.5em;
+  color: #2a7a9e;
 }
 
 header p {
-  font-size: 1.2rem;
+  font-size: 1.2em;
+  color: #444;
 }
 
-/* Main Game Area */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  max-width: 800px;
-}
-
-/* Story Section */
-#story-container {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  width: 100%;
-  text-align: center;
-}
-
-#story {
-  font-size: 1.2rem;
-  line-height: 1.5;
-}
-
-/* Choices Section */
-#choices-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.choice {
-  background: #1fb6ff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: transform 0.2s, background 0.2s;
-}
-
-.choice:hover {
-  background: #007acc;
-  transform: scale(1.05);
-}
-
-/* Virus Spread Section */
-#game-area {
+/* Map Section */
+#map-container {
   position: relative;
   width: 100%;
-  height: 300px;
-  background: #001f3f;
+  max-width: 600px;
+  height: 400px;
+  margin: 20px auto;
+  border: 2px solid #2a7a9e;
   border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 20px;
+  background: url('https://via.placeholder.com/600x400') no-repeat center center;
+  background-size: cover;
 }
 
 #virus-spread {
   position: absolute;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   background: red;
-  box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.6);
-  animation: pulsate 1.5s infinite;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
 }
 
-@keyframes pulsate {
-  0% {
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
     transform: scale(1);
-    opacity: 1;
+    opacity: 0.8;
   }
   50% {
     transform: scale(1.5);
-    opacity: 0.7;
+    opacity: 0.5;
   }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+}
+
+/* Game Panel Section */
+#game-panel {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.story-box {
+  background: #eef5f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  color: #333;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.choices-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.choice {
+  background: #2a7a9e;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.choice:hover {
+  background: #1d5873;
 }
 
 /* Game Stats Section */
 #game-stats {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-top: 20px;
 }
 
 #game-stats p {
-  margin: 0;
-  font-size: 1rem;
+  font-size: 1.2em;
+  color: #444;
+  margin: 5px 0;
 }
 
 /* Footer Section */
 footer {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  opacity: 0.7;
+  margin-top: 30px;
+  font-size: 0.9em;
+  color: #666;
 }
