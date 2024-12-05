@@ -7,6 +7,7 @@
     <meta name="author" content="Your Name">
     <title>Contagion: Pandemic 2050</title>
     <style>
+        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -18,13 +19,18 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        /* Header */
         header {
             background: rgba(20, 45, 67, 0.9);
             width: 100%;
             padding: 20px 0;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
+
         header h1 {
             margin: 0;
             color: #76c7c0;
@@ -32,21 +38,41 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
+        /* Section */
         section {
             max-width: 800px;
             text-align: center;
             padding: 20px;
+            margin: 20px 10px;
+            background: rgba(30, 50, 70, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
+
         section h2 {
             color: #f29e4c;
             font-size: 1.8rem;
             margin-bottom: 10px;
         }
+
         p {
             line-height: 1.6;
             font-size: 1rem;
             margin-bottom: 15px;
         }
+
+        /* Placeholder for Images */
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 15px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button */
         button {
             padding: 10px 20px;
             font-size: 1rem;
@@ -58,14 +84,33 @@
             text-transform: uppercase;
             transition: 0.3s ease;
         }
+
         button:hover {
             background: #f29e4c;
             color: #fff;
         }
+
+        /* Footer */
         footer {
             margin-top: 20px;
             font-size: 0.8rem;
             color: #aaa;
+            text-align: center;
+        }
+
+        /* Media Query for Mobile Devices */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 15px;
+            }
+
+            button {
+                width: 90%;
+            }
         }
     </style>
 </head>
@@ -76,22 +121,20 @@
     <section>
         <h2>The Story So Far...</h2>
         <p>
-            In the year 2050, a mysterious and highly contagious pathogen emerges from the thawing permafrost in Siberia. This virus, identified as a mutated strain of the Black Death, rapidly spreads across the globe, sparking panic and chaos. 
+            <img src="world-map.png" alt="Global map showing infection zones" />
+            In the year 2050, a mysterious and highly contagious pathogen emerges from the thawing permafrost in Siberia. 
         </p>
         <p>
-            You, Dr. Aria Chen, a world-renowned epidemiologist, have been appointed as the leader of the global response to this unprecedented crisis. Your mission: contain the outbreak, develop a vaccine, and save humanity.
+            <img src="doctor-pandemic.png" alt="Dr. Aria Chen, the protagonist" />
+            You, Dr. Aria Chen, a world-renowned epidemiologist, have been appointed as the leader of the global response.
         </p>
         <p>
-            The challenges are immense. Climate refugees fleeing rising sea levels complicate containment efforts. Cyber attacks threaten critical vaccine research, and a growing anti-science movement undermines public trust, culminating in civil war.
-        </p>
-        <p>
-            The world is watching. Can you save it?
+            <img src="path/to/placeholder3.jpg" alt="Crowded hospital scene during the pandemic" />
+            The challenges are immense. Climate refugees fleeing rising sea levels complicate containment efforts.
         </p>
         <button onclick="startGame()">Start Game</button>
     </section>
-    <footer>
-        © 2024 Your Name. Contagion Clone is a tribute to the classic pandemic strategy games.
-    </footer>
+
     <script>
         function startGame() {
             alert("Game starting soon! Implement game mechanics here.");
