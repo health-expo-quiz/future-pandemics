@@ -1,171 +1,150 @@
-// Initialize game state
-let score = 0;
-const gameState = {
-  phase: 1,
-  publicTrust: 50, // Starts at 50%
-  virusSpreadRate: 1, // Affects how fast the virus spreads
-  containmentEfforts: 0,
-  vaccineResearch: 0,
+// GAME: Contagion Pandemic 2050
+// Author: Your Name
+
+// Game State Variables
+let gameState = {
+    infectionRate: 1, // Infection spread multiplier
+    populationInfected: 0, // Total number of infected people
+    funding: 100, // Funding for research and response
+    vaccinesDeveloped: 0, // Number of vaccines produced
+    trustLevel: 100, // Trust level among the public
+    civilUnrest: 0, // Levels of civil unrest
+    timeElapsed: 0, // Days since the outbreak started
 };
 
-// Get references to DOM elements
-const storyElement = document.getElementById("story");
-const choicesContainer = document.getElementById("choices");
-const scoreElement = document.getElementById("score");
-const virusSpread = document.getElementById("virus-spread");
+// Constants
+const GLOBAL_POPULATION = 8000000000;
+const MAX_FUNDING = 500;
+const MAX_UNREST = 100;
 
-// Update score display
-function updateScore(points) {
-  score += points;
-  scoreElement.textContent = `Score: ${score}`;
+// Utility Functions
+function logEvent(message) {
+    const log = document.getElementById("event-log");
+    const newEvent = document.createElement("p");
+    newEvent.textContent = message;
+    log.prepend(newEvent); // Show the latest events at the top
 }
 
-// Handle virus spread animation
-function spreadVirus() {
-  const randomTop = Math.random() * 90 + "%";
-  const randomLeft = Math.random() * 90 + "%";
-
-  virusSpread.style.top = randomTop;
-  virusSpread.style.left = randomLeft;
-
-  // Increase spread rate if public trust is low
-  if (gameState.publicTrust < 30) {
-    gameState.virusSpreadRate += 0.5;
-  }
+function updateUI() {
+    document.getElementById("infection-rate").textContent = gameState.infectionRate.toFixed(2);
+    document.getElementById("population-infected").textContent = gameState.populationInfected.toLocaleString();
+    document.getElementById("funding").textContent = `$${gameState.funding}`;
+    document.getElementById("vaccines-developed").textContent = gameState.vaccinesDeveloped;
+    document.getElementById("trust-level").textContent = `${gameState.trustLevel}%`;
+    document.getElementById("civil-unrest").textContent = `${gameState.civilUnrest}%`;
+    document.getElementById("time-elapsed").textContent = `${gameState.timeElapsed} days`;
 }
 
-// Render the story and choices for each phase
-function renderPhase() {
-  choicesContainer.innerHTML = ""; // Clear old choices
-
-  switch (gameState.phase) {
-    case 1:
-      storyElement.textContent =
-        "A mysterious virus has emerged from the Siberian permafrost. How will you respond?";
-      renderChoices([
-        {
-          text: "Focus on public trust",
-          points: 10,
-          resultText:
-            "Your efforts to communicate with the public improve trust, but the virus continues to spread.",
-          effect: { publicTrust: 10 },
-          nextPhase: true,
-        },
-        {
-          text: "Implement containment measures",
-          points: 15,
-          resultText:
-            "Containment measures slow the virus but reduce public freedom.",
-          effect: { containmentEfforts: 10, publicTrust: -5 },
-          nextPhase: true,
-        },
-        {
-          text: "Prioritize vaccine research",
-          points: 20,
-          resultText:
-            "Early vaccine research begins, but it will take time to develop.",
-          effect: { vaccineResearch: 10 },
-          nextPhase: true,
-        },
-      ]);
-      break;
-
-    case 2:
-      storyElement.textContent =
-        "The virus spreads rapidly. Refugee movements complicate containment efforts. What will you do?";
-      renderChoices([
-        {
-          text: "Set up refugee camps",
-          points: 15,
-          resultText:
-            "Refugee camps stabilize the situation but stretch resources.",
-          effect: { publicTrust: 10 },
-          nextPhase: true,
-        },
-        {
-          text: "Focus on border control",
-          points: 10,
-          resultText:
-            "Border control slows the virus but decreases global cooperation.",
-          effect: { containmentEfforts: 10, publicTrust: -10 },
-          nextPhase: true,
-        },
-      ]);
-      break;
-
-    case 3:
-      storyElement.textContent =
-        "Cyberattacks threaten vaccine research. How will you respond?";
-      renderChoices([
-        {
-          text: "Strengthen cybersecurity",
-          points: 20,
-          resultText:
-            "Your cybersecurity measures protect critical vaccine research.",
-          effect: { vaccineResearch: 10 },
-          nextPhase: true,
-        },
-        {
-          text: "Accelerate vaccine production",
-          points: 25,
-          resultText:
-            "Accelerating production leads to a faster vaccine but public trust declines.",
-          effect: { publicTrust: -10, vaccineResearch: 20 },
-          nextPhase: true,
-        },
-      ]);
-      break;
-
-    default:
-      endGame();
-  }
+function randomChance(percentage) {
+    return Math.random() < percentage / 100;
 }
 
-// Render choice buttons dynamically
-function renderChoices(choices) {
-  choices.forEach((choice) => {
-    const button = document.createElement("button");
-    button.className = "choice";
-    button.textContent = choice.text;
-    button.onclick = () => handleChoice(choice);
-    choicesContainer.appendChild(button);
-  });
+// Core Gameplay Functions
+function spreadInfection() {
+    const newInfections = Math.floor(gameState.populationInfected * gameState.infectionRate);
+    gameState.populationInfected += newInfections;
+    if (gameState.populationInfected > GLOBAL_POPULATION) {
+        gameState.populationInfected = GLOBAL_POPULATION;
+        logEvent("The entire global population is now infected!");
+    } else {
+        logEvent(`Infection spreads. ${newInfections.toLocaleString()} new people infected.`);
+    }
 }
 
-// Handle choice selection
-function handleChoice(choice) {
-  updateScore(choice.points);
-  storyElement.textContent = choice.resultText;
-
-  // Apply choice effects to game state
-  for (const key in choice.effect) {
-    gameState[key] += choice.effect[key];
-  }
-
-  // Move to the next phase
-  if (choice.nextPhase) {
-    gameState.phase++;
-    renderPhase();
-  }
+function allocateFunding(amount) {
+    if (gameState.funding >= amount) {
+        gameState.funding -= amount;
+        gameState.trustLevel += 5; // Public trusts efforts
+        logEvent(`Allocated $${amount} to vaccine development.`);
+    } else {
+        logEvent("Not enough funding to allocate.");
+    }
 }
 
-// End the game
-function endGame() {
-  storyElement.textContent =
-    "The pandemic has been resolved. Here is your final score:";
-  choicesContainer.innerHTML = `
-    <p>Final Score: ${score}</p>
-    <button class="choice" onclick="restartGame()">Play Again</button>
-  `;
+function developVaccine() {
+    const success = randomChance(30 + gameState.funding / 20);
+    if (success) {
+        gameState.vaccinesDeveloped++;
+        gameState.infectionRate *= 0.8; // Reduce infection spread
+        logEvent("Vaccine successfully developed! Infection rate reduced.");
+    } else {
+        logEvent("Vaccine trial failed. Keep trying!");
+    }
 }
 
-// Restart the game
-function restartGame() {
-  location.reload();
+function handleCivilUnrest() {
+    if (gameState.civilUnrest >= MAX_UNREST) {
+        logEvent("Civil unrest has reached critical levels! Governments are collapsing.");
+        endGame(false);
+    } else if (randomChance(20)) {
+        gameState.civilUnrest += 10;
+        logEvent("Anti-vaccine protests escalate. Civil unrest increases.");
+    }
 }
 
-// Virus movement simulation
-setInterval(spreadVirus, 3000); // Virus marker moves every 3 seconds
+function endGame(victory) {
+    if (victory) {
+        logEvent("Congratulations! Humanity survived the pandemic under your leadership.");
+    } else {
+        logEvent("Game Over: The world succumbs to chaos.");
+    }
+    disableGame();
+}
 
-// Start the game
-renderPhase();
+function disableGame() {
+    document.getElementById("actions").style.display = "none";
+}
+
+// Game Actions
+document.getElementById("spread-infection").addEventListener("click", () => {
+    spreadInfection();
+    gameState.timeElapsed++;
+    updateUI();
+});
+
+document.getElementById("allocate-funding").addEventListener("click", () => {
+    allocateFunding(50);
+    updateUI();
+});
+
+document.getElementById("develop-vaccine").addEventListener("click", () => {
+    developVaccine();
+    updateUI();
+});
+
+document.getElementById("civil-unrest").addEventListener("click", () => {
+    handleCivilUnrest();
+    updateUI();
+});
+
+// Game Loop
+function gameLoop() {
+    spreadInfection();
+    handleCivilUnrest();
+    gameState.timeElapsed++;
+    updateUI();
+
+    if (gameState.populationInfected >= GLOBAL_POPULATION / 2 && gameState.vaccinesDeveloped === 0) {
+        logEvent("Warning: Half the world population is infected, but no vaccines are ready.");
+    }
+
+    if (gameState.trustLevel <= 0) {
+        logEvent("Public trust collapses. You lose control over the situation.");
+        endGame(false);
+    }
+
+    if (gameState.populationInfected === GLOBAL_POPULATION && gameState.vaccinesDeveloped > 0) {
+        endGame(true);
+    }
+}
+
+// Initialize Game
+function startGame() {
+    logEvent("The pandemic begins. You are Dr. Aria Chen. The world looks to you for leadership.");
+    gameState.populationInfected = 1000; // Initial infection count
+    updateUI();
+    setInterval(gameLoop, 5000); // Game loop every 5 seconds
+}
+
+// Attach Event Listener for Start Button
+document.getElementById("start-game").addEventListener("click", startGame);
