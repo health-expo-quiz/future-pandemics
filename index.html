@@ -1,50 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pandemic Simulation Game</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contagion Clone: Step into the role of Dr. Aria Chen and combat a global pandemic.">
+    <meta name="author" content="Your Name">
+    <title>Contagion: Pandemic 2050</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #2e3b55, #142d43);
+            color: #f8f8f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        header {
+            background: rgba(20, 45, 67, 0.9);
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            color: #76c7c0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        section {
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+        }
+        section h2 {
+            color: #f29e4c;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        p {
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background: #76c7c0;
+            color: #142d43;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: #f29e4c;
+            color: #fff;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
-  <div class="game-container">
-    <!-- Header Section -->
     <header>
-      <h1>Pandemic Simulation</h1>
-      <p>Take charge, make decisions, and stop the virus!</p>
+        <h1>Contagion: Pandemic 2050</h1>
     </header>
-
-    <!-- Main Gameplay Section -->
-    <main>
-      <!-- Map and Virus Spread -->
-      <div id="map-container">
-        <div id="virus-spread"></div>
-      </div>
-
-      <!-- Game Story and Choices -->
-      <section id="game-panel">
-        <div id="story" class="story-box">
-          Welcome to the Pandemic Simulation Game! You are Dr. Aria Chen, tasked with saving the world.
-        </div>
-        <div id="choices-container" class="choices-container">
-          <!-- Buttons will be dynamically generated here -->
-        </div>
-      </section>
-
-      <!-- Game Stats -->
-      <section id="game-stats">
-        <p id="score">Score: 0</p>
-        <p id="public-trust">Public Trust: 50%</p>
-      </section>
-    </main>
-
-    <!-- Footer Section -->
+    <section>
+        <h2>The Story So Far...</h2>
+        <p>
+            In the year 2050, a mysterious and highly contagious pathogen emerges from the thawing permafrost in Siberia. This virus, identified as a mutated strain of the Black Death, rapidly spreads across the globe, sparking panic and chaos. 
+        </p>
+        <p>
+            You, Dr. Aria Chen, a world-renowned epidemiologist, have been appointed as the leader of the global response to this unprecedented crisis. Your mission: contain the outbreak, develop a vaccine, and save humanity.
+        </p>
+        <p>
+            The challenges are immense. Climate refugees fleeing rising sea levels complicate containment efforts. Cyber attacks threaten critical vaccine research, and a growing anti-science movement undermines public trust, culminating in civil war.
+        </p>
+        <p>
+            The world is watching. Can you save it?
+        </p>
+        <button onclick="startGame()">Start Game</button>
+    </section>
     <footer>
-      <p>&copy; 2024 Pandemic Simulation Game. All rights reserved.</p>
+        © 2024 Your Name. Contagion Clone is a tribute to the classic pandemic strategy games.
     </footer>
-  </div>
-
-  <!-- Game Script -->
-  <script src="game.js"></script>
+    <script>
+        function startGame() {
+            alert("Game starting soon! Implement game mechanics here.");
+        }
+    </script>
 </body>
 </html>
