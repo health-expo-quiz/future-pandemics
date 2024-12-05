@@ -3,45 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pandemic Strategy Game</title>
+  <title>Pandemic Simulation Game</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Pandemic Strategy Game</h1>
-    <p>Can you balance public trust, containment efforts, and vaccine research to save the world?</p>
-  </header>
+  <div class="game-container">
+    <!-- Header Section -->
+    <header>
+      <h1>Pandemic Simulation</h1>
+      <p>Take charge, make decisions, and stop the virus!</p>
+    </header>
 
-  <main>
-    <!-- Game Area -->
-    <div id="game-area">
-      <!-- Story Section -->
-      <div id="story-container">
-        <p id="story">Welcome to the Pandemic Strategy Game! Make your first decision below:</p>
+    <!-- Main Gameplay Section -->
+    <main>
+      <!-- Map and Virus Spread -->
+      <div id="map-container">
+        <div id="virus-spread"></div>
       </div>
 
-      <!-- Choices Section -->
-      <div id="choices-container">
-        <!-- Buttons for player choices will be dynamically inserted here -->
-      </div>
+      <!-- Game Story and Choices -->
+      <section id="game-panel">
+        <div id="story" class="story-box">
+          Welcome to the Pandemic Simulation Game! You are Dr. Aria Chen, tasked with saving the world.
+        </div>
+        <div id="choices-container" class="choices-container">
+          <!-- Buttons will be dynamically generated here -->
+        </div>
+      </section>
 
-      <!-- Virus Spread Hotspot -->
-      <div id="virus-spread" class="pulsating-dot"></div>
-    </div>
+      <!-- Game Stats -->
+      <section id="game-stats">
+        <p id="score">Score: 0</p>
+        <p id="public-trust">Public Trust: 50%</p>
+      </section>
+    </main>
 
-    <!-- Game Stats -->
-    <div id="game-stats">
-      <p id="score-display">Score: 0</p>
-      <p id="trust-display">Public Trust: 50%</p>
-      <p id="containment-display">Containment Efforts: 10</p>
-      <p id="research-display">Vaccine Research Progress: 0%</p>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>Created by [Your Name]</p>
-  </footer>
+    <!-- Footer Section -->
+    <footer>
+      <p>&copy; 2024 Pandemic Simulation Game. All rights reserved.</p>
+    </footer>
+  </div>
 
   <!-- Game Script -->
   <script src="game.js"></script>
