@@ -53,7 +53,7 @@ header p {
   margin: 20px auto;
   border: 2px solid #2a7a9e;
   border-radius: 8px;
-  background: url('https://via.placeholder.com/600x400') no-repeat center center;
+  background: url('world-map.png') no-repeat center center;
   background-size: cover;
 }
 
