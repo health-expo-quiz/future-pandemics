@@ -148,3 +148,27 @@ function startGame() {
 
 // Attach Event Listener for Start Button
 document.getElementById("start-game").addEventListener("click", startGame);
+
+// ... (previous code)
+
+// Real-time Visualization
+let mapCanvas = document.getElementById("world-map");
+let mapCtx = mapCanvas.getContext("2d");
+
+// Function to draw the infection spread on the map
+function drawInfection() {
+  // Simplified for demonstration: You can use a more complex algorithm for realistic spread
+  let infectionRadius = Math.sqrt(gameState.populationInfected / 1000000);
+  let infectionColor = `rgba(255, 0, 0, ${infectionRadius / 10})`; // Adjust opacity based on radius
+
+  mapCtx.fillStyle = infectionColor;
+  mapCtx.beginPath();
+  mapCtx.arc(mapCanvas.width / 2, mapCanvas.height / 2, infectionRadius * 10, 0, 2 * Math.PI);
+  mapCtx.fill();
+}
+
+// Modified game loop to include visualization
+function gameLoop() {
+  // ... (previous game loop code)
+  drawInfection();
+
